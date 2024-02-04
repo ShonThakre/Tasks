@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TasksAPI.Data;
+using TasksAPI.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TasksDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DevConString")));
 
-
+builder.Services.AddScoped<ITokenRepository,TokenRepository>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("Tasks")
