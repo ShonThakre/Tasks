@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TasksAPI.Models.DTO;
+using TasksAPI.Repositories;
 
 namespace TasksAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace TasksAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager,ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         [HttpPost]
@@ -52,9 +55,13 @@ namespace TasksAPI.Controllers
                 {
                     //Create Token
 
+                 var jwtToken =  _tokenRepository.CreateJWTToken(user);
 
-
-                    return Ok();
+                    var response = new LoginResponseDTO
+                    {
+                        JwtToken = jwtToken
+                    };
+                    return Ok(response);
                 }
             }
           
