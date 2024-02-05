@@ -9,6 +9,7 @@ namespace TasksAPI.Mappings
         public AutoMapperProfiles()
         {
             CreateMap<BoardDTO, Board>().ReverseMap();
+            CreateMap<Board, BoardRequestDTO>().ReverseMap();
         }
     }
 }
