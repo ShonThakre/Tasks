@@ -7,6 +7,7 @@ using TasksAPI.Data;
 using TasksAPI.Repositories;
 using Microsoft.OpenApi.Models;
 using TasksAPI.Mappings;
+using TasksAPI.Repositories.IRepositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
