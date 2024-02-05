@@ -11,9 +11,9 @@ namespace TasksAPI.Data
             
         }
 
-        DbSet<MainTask> MainTasks { get; set; } 
-        DbSet<Board> Boards { get; set; }
-        DbSet<TaskList> TaskLists { get; set; }
-        DbSet<SubTask> SubTasks { get; set; }
+       public DbSet<MainTask> MainTasks { get; set; } 
+       public DbSet<Board> Boards { get; set; }
+       public DbSet<TaskList> TaskLists { get; set; }
+       public DbSet<SubTask> SubTasks { get; set; }
     }
 }
