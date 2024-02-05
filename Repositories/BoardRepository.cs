@@ -24,29 +24,43 @@ namespace TasksAPI.Repositories
         public async Task<Board?> DeleteAsync(int id)
         {
            var existingBoard =  await _Context.Boards.FirstOrDefaultAsync(x => x.Id == id);
-            if (existingBoard != null)
-            {
-                _Context.Boards.Remove(existingBoard);
-                _Context.SaveChanges();
-                return existingBoard;
-            }
-            else
+
+            if (existingBoard == null)
             {
                 return null;
             }
 
+            _Context.Boards.Remove(existingBoard);
+                _Context.SaveChanges();
+                return existingBoard;
+            
+       
         }
 
-        public async Task<List<Board>> GetAllAsync()
+        public async Task<List<Board>> GetAllAsync(string userId)
         {
-           var List =  await _Context.Boards.ToListAsync();
+           var List =  await _Context.Boards
+                .Where(b => b.UserId == userId)
+                .Include(board => board.TaskLists)
+                .ThenInclude(TaskLists => TaskLists.MainTasks)
+                .ThenInclude(MainTasks => MainTasks.SubTasks)
+                .ToListAsync();
 
             return List;
         }
 
-        public Task<Board?> UpdateAsync(int id, Board board)
+        public async Task<Board?> UpdateAsync(int id, Board board)
         {
-            throw new NotImplementedException();
+            var existingBoard = await _Context.Boards.FirstOrDefaultAsync(x => x.Id == id);
+            if (existingBoard == null)
+            {
+                return null;
+            }
+
+            existingBoard.Title = board.Title;
+
+            await _Context.SaveChangesAsync();
+            return existingBoard;
         }
     }
 }
