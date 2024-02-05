@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TasksAPI.Models.DTO;
-using TasksAPI.Repositories;
+using TasksAPI.Repositories.IRepositories;
 
 namespace TasksAPI.Controllers
 {

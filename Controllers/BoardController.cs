@@ -7,7 +7,7 @@ using System.Security.Claims;
 using TasksAPI.CustomActionFilters;
 using TasksAPI.Models.Domain;
 using TasksAPI.Models.DTO;
-using TasksAPI.Repositories;
+using TasksAPI.Repositories.IRepositories;
 
 namespace TasksAPI.Controllers
 {
