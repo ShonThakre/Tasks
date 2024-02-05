@@ -1,4 +1,5 @@
-﻿using TasksAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TasksAPI.Data;
 using TasksAPI.Models.Domain;
 
 namespace TasksAPI.Repositories
@@ -20,17 +21,30 @@ namespace TasksAPI.Repositories
             return board;
         }
 
-        public Task<Board?> DeleteAsync(Guid id)
+        public async Task<Board?> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+           var existingBoard =  await _Context.Boards.FirstOrDefaultAsync(x => x.Id == id);
+            if (existingBoard != null)
+            {
+                _Context.Boards.Remove(existingBoard);
+                _Context.SaveChanges();
+                return existingBoard;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
-        public Task<List<Board>> GetAllAsync()
+        public async Task<List<Board>> GetAllAsync()
         {
-            throw new NotImplementedException();
+           var List =  await _Context.Boards.ToListAsync();
+
+            return List;
         }
 
-        public Task<Board?> UpdateAsync(Guid id, Board board)
+        public Task<Board?> UpdateAsync(int id, Board board)
         {
             throw new NotImplementedException();
         }

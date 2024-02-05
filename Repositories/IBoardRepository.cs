@@ -6,7 +6,7 @@ namespace TasksAPI.Repositories
     {
         Task<List<Board>> GetAllAsync();
         Task<Board> CreateAsync(Board board);
-        Task<Board?> UpdateAsync(Guid id, Board board);
-        Task<Board?> DeleteAsync(Guid id);
+        Task<Board?> UpdateAsync(int id, Board board);
+        Task<Board?> DeleteAsync(int id);
     }
 }

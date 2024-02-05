@@ -6,6 +6,7 @@ using System.Text;
 using TasksAPI.Data;
 using TasksAPI.Repositories;
 using Microsoft.OpenApi.Models;
+using TasksAPI.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,6 +85,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 
     });
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
