@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TasksAPI.Data;
 using TasksAPI.Models.Domain;
+using TasksAPI.Repositories.IRepositories;
 
 namespace TasksAPI.Repositories
 {
