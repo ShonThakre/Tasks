@@ -13,5 +13,7 @@ namespace TasksAPI.Models.DTO
         public DateTime EntryDate { get; set; } 
 
         public string UserId { get; set; } 
+
+
     }
 }
