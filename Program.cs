@@ -55,6 +55,8 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddDbContext<TasksDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DevConString")));
 
+
+
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
@@ -87,6 +89,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 
 var app = builder.Build();
 
