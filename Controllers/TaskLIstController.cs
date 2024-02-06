@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,57 +7,36 @@ using TasksAPI.CustomActionFilters;
 using TasksAPI.Models.Domain;
 using TasksAPI.Models.DTO;
 using TasksAPI.Repositories;
-
+using TasksAPI.Repositories.IRepositories;
 
 namespace TasksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-
-    public class BoardController : ControllerBase
+    public class TaskLIstController : ControllerBase
     {
-        private readonly IBoardRepository _boardRepository;
+        private readonly ITaskListRepository _taskListRepository;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(IBoardRepository boardRepository, IMapper mapper, UserManager<IdentityUser> userManager)
+
+        public TaskLIstController(ITaskListRepository taskListRepository, IMapper mapper, UserManager<IdentityUser> userManager)
         {
-            _boardRepository = boardRepository;
+            _taskListRepository = taskListRepository;
             _mapper = mapper;
-            _userManager = userManager;
         }
 
 
 
         [HttpGet]
         [ValidateModel]
-        public async Task<IActionResult> GetAll()
+        [Route("{boardId:int}")]
+        public async Task<IActionResult> GetAll([FromRoute] int boardId)
         {
+            var taskListDomainModel = await _taskListRepository.GetAllAsync(boardId);
 
-            var userDetails = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+            var taskListDto = _mapper.Map<List<TaskListDTO>>(taskListDomainModel);
 
-            if (userDetails == null)
-            {
-                return BadRequest("UserDetails not found");
-            }
-
-            var user = await _userManager.FindByNameAsync(userDetails);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
-            string? UserId = user.Id;
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return BadRequest("userid is null");
-            }
-            var BoardsDomain = await _boardRepository.GetAllAsync(UserId);
-
-            var boardDto = _mapper.Map<List<BoardDTO>>(BoardsDomain);
-
-            return Ok(boardDto);
+            return Ok(taskListDto);
 
         }
 
@@ -67,7 +45,7 @@ namespace TasksAPI.Controllers
         public async Task<IActionResult> Create([FromBody] BoardRequestDTO BoardRequestDTO)
         {
 
-  
+
 
             var boardDomainModel = _mapper.Map<Board>(BoardRequestDTO);
 
@@ -87,8 +65,8 @@ namespace TasksAPI.Controllers
 
             string? Userid = user.Id;
 
-           
-            if(Userid == null)
+
+            if (Userid == null)
             {
                 return BadRequest("userId is null");
             }
@@ -96,7 +74,7 @@ namespace TasksAPI.Controllers
             boardDomainModel.UserId = Userid;
 
 
-            await _boardRepository.CreateAsync(boardDomainModel);
+            await _taskListRepository.CreateAsync(boardDomainModel);
 
             return Ok(_mapper.Map<BoardDTO>(boardDomainModel));
 
@@ -105,13 +83,13 @@ namespace TasksAPI.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [ValidateModel]
-        public async Task<IActionResult> Update([FromBody] int id, BoardRequestDTO boardRequestDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, BoardRequestDTO boardRequestDTO)
         {
             var boardDomainModel = _mapper.Map<Board>(boardRequestDTO);
 
-            boardDomainModel = await _boardRepository.UpdateAsync(id, boardDomainModel);
+            boardDomainModel = await _taskListRepository.UpdateAsync(id, boardDomainModel);
 
-            if(boardDomainModel== null)
+            if (boardDomainModel == null)
             {
                 return NotFound();
             }
@@ -123,18 +101,16 @@ namespace TasksAPI.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var existingBoard = await _boardRepository.DeleteAsync(id);
+            var existingBoard = await _taskListRepository.DeleteAsync(id);
 
             if (existingBoard == null)
             {
-                return NotFound();  
+                return NotFound();
             }
 
             return Ok(_mapper.Map<BoardDTO>(existingBoard));
         }
 
-        
 
     }
-
 }
