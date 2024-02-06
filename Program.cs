@@ -92,6 +92,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
 
 var app = builder.Build();
 
