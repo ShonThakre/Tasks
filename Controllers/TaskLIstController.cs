@@ -42,42 +42,14 @@ namespace TasksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> Create([FromBody] BoardRequestDTO BoardRequestDTO)
+        public async Task<IActionResult> Create([FromBody] TaskListDTO taskListDTO)
         {
+            var tasklistDomainModel = _mapper.Map<TaskList>(taskListDTO);
 
+            await _taskListRepository.CreateAsync(tasklistDomainModel);
 
-
-            var boardDomainModel = _mapper.Map<Board>(BoardRequestDTO);
-
-
-            var userDetails = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-
-            if (userDetails == null)
-            {
-                return BadRequest("UserDetails not found");
-            }
-
-            var user = await _userManager.FindByNameAsync(userDetails);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
-            string? Userid = user.Id;
-
-
-            if (Userid == null)
-            {
-                return BadRequest("userId is null");
-            }
-
-            boardDomainModel.UserId = Userid;
-
-
-            await _taskListRepository.CreateAsync(boardDomainModel);
-
-            return Ok(_mapper.Map<BoardDTO>(boardDomainModel));
-
+            return Ok(_mapper.Map<TaskListDTO>(tasklistDomainModel));
+       
         }
 
         [HttpPut]
@@ -85,15 +57,7 @@ namespace TasksAPI.Controllers
         [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] int id, BoardRequestDTO boardRequestDTO)
         {
-            var boardDomainModel = _mapper.Map<Board>(boardRequestDTO);
-
-            boardDomainModel = await _taskListRepository.UpdateAsync(id, boardDomainModel);
-
-            if (boardDomainModel == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<BoardDTO>(boardDomainModel));
+            
         }
 
 
