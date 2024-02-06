@@ -11,6 +11,7 @@ namespace TasksAPI.Mappings
             CreateMap<BoardDTO, Board>().ReverseMap();
             CreateMap<Board, BoardRequestDTO>().ReverseMap();
             CreateMap<TaskListDTO, TaskList>().ReverseMap();
+            CreateMap<TaskListRequestDTO, TaskList>().ReverseMap();
         }
     }
 }
