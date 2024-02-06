@@ -105,7 +105,7 @@ namespace TasksAPI.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [ValidateModel]
-        public async Task<IActionResult> Update([FromBody] int id, BoardRequestDTO boardRequestDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, BoardRequestDTO boardRequestDTO)
         {
             var boardDomainModel = _mapper.Map<Board>(boardRequestDTO);
 

@@ -13,6 +13,7 @@ namespace TasksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class TaskLIstController : ControllerBase
     {
         private readonly ITaskListRepository _taskListRepository;
@@ -42,9 +43,9 @@ namespace TasksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> Create([FromBody] TaskListDTO taskListDTO)
+        public async Task<IActionResult> Create([FromBody] TaskListRequestDTO taskListRequestDTO)
         {
-            var tasklistDomainModel = _mapper.Map<TaskList>(taskListDTO);
+            var tasklistDomainModel = _mapper.Map<TaskList>(taskListRequestDTO);
 
             await _taskListRepository.CreateAsync(tasklistDomainModel);
 
@@ -55,9 +56,17 @@ namespace TasksAPI.Controllers
         [HttpPut]
         [Route("{id:int}")]
         [ValidateModel]
-        public async Task<IActionResult> Update([FromRoute] int id, BoardRequestDTO boardRequestDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, TaskListRequestDTO taskListRequestDTO)
         {
-            
+            var taskListDomainModel = _mapper.Map<TaskList>(taskListRequestDTO);
+            taskListDomainModel = await _taskListRepository.UpdateAsync(id, taskListDomainModel);
+
+            if(taskListDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<TaskListDTO>(taskListDomainModel));
         }
 
 
@@ -65,14 +74,14 @@ namespace TasksAPI.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var existingBoard = await _taskListRepository.DeleteAsync(id);
+            var existingTaskList = await _taskListRepository.DeleteAsync(id);
 
-            if (existingBoard == null)
+            if (existingTaskList == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<BoardDTO>(existingBoard));
+            return Ok(_mapper.Map<TaskListDTO>(existingTaskList));
         }
 
 
