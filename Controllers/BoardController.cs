@@ -56,6 +56,11 @@ namespace TasksAPI.Controllers
             }
             var BoardsDomain = await _boardRepository.GetAllAsync(UserId);
 
+            if (BoardsDomain == null)
+            {
+                return NotFound();
+            }
+
             var boardDto = _mapper.Map<List<BoardDTO>>(BoardsDomain);
 
             return Ok(boardDto);
