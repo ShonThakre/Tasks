@@ -17,7 +17,8 @@ namespace TasksAPI.Mappings
             CreateMap<MainTaskDTO, MainTask>().ReverseMap();
             CreateMap<MainTaskRequestDTO, MainTask>().ReverseMap();
 
-            CreateMap<SubTaskDTO, SubTask>().ReverseMap();  
+            CreateMap<SubTaskDTO, SubTask>().ReverseMap();
+            CreateMap<SubTaskRequestDTO, SubTask>().ReverseMap();
            
         }
     }
