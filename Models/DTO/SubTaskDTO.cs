@@ -12,7 +12,7 @@ namespace TasksAPI.Models.DTO
 
         public string Title { get; set; }
 
-        public string Status { get; set; } = "Y";
+        public bool Status { get; set; } = true;
 
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
 

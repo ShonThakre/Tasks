@@ -14,7 +14,7 @@ namespace TasksAPI.Models.DTO
         
         public string Description { get; set; }
         
-        public string Status { get; set; } = "Y";
+        public string Status { get; set; } 
         
         public int Sequence { get; set; }
         

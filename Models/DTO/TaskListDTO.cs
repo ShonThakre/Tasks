@@ -9,7 +9,7 @@ namespace TasksAPI.Models.DTO
 
         public string Title { get; set; }
 
-        public string Status { get; set; } = "Y";
+        public string Status { get; set; } 
 
         public int Sequence { get; set; }
 
