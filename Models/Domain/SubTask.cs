@@ -10,7 +10,7 @@ namespace TasksAPI.Models.Domain
         [Required]
         public string Title { get; set; }
         [Required]
-        public string Status { get; set; } = "Y";
+        public bool Status { get; set; } = true;
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
 
         // Navigation property
