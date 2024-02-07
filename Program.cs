@@ -94,6 +94,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
 builder.Services.AddScoped<IMainTaskRepository, MainTaskRepository>();
+builder.Services.AddScoped<ISubTaskRepository, SubTaskRepository>();
 
 var app = builder.Build();
 
