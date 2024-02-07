@@ -17,14 +17,14 @@ namespace TasksAPI.Repositories
 
         public async Task<Board> CreateAsync(Board board)
         {
-           await _Context.Boards.AddAsync(board);
+            await _Context.Boards.AddAsync(board);
             await _Context.SaveChangesAsync();
             return board;
         }
 
         public async Task<Board?> DeleteAsync(int id)
         {
-           var existingBoard =  await _Context.Boards.FirstOrDefaultAsync(x => x.Id == id);
+            var existingBoard = await _Context.Boards.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existingBoard == null)
             {
@@ -32,20 +32,26 @@ namespace TasksAPI.Repositories
             }
 
             _Context.Boards.Remove(existingBoard);
-                _Context.SaveChanges();
-                return existingBoard;
-            
-       
+            _Context.SaveChanges();
+            return existingBoard;
+
+
         }
 
         public async Task<List<Board>> GetAllAsync(string userId)
         {
-           var List =  await _Context.Boards
-                .Where(b => b.UserId == userId)
-                .Include(board => board.TaskLists)
-                .ThenInclude(TaskLists => TaskLists.MainTasks)
-                .ThenInclude(MainTasks => MainTasks.SubTasks)
-                .ToListAsync();
+
+            //for complete nested data
+            var List = await _Context.Boards
+    .Where(b => b.UserId == userId)
+    .Include(board => board.TaskLists)
+    .ThenInclude(TaskLists => TaskLists.MainTasks)
+    .ThenInclude(MainTasks => MainTasks.SubTasks)
+    .ToListAsync();
+            //var List =  await _Context.Boards
+            //    .Where(b => b.UserId == userId)
+            //    .Include(board => board.TaskLists)
+            //    .ToListAsync();
 
             return List;
         }

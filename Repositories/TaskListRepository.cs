@@ -32,6 +32,7 @@ namespace TasksAPI.Repositories
             }
 
             _dbContext.TaskLists.Remove(existingTaskLIst);
+            _dbContext.SaveChanges();
             return existingTaskLIst;
         }
 
@@ -47,11 +48,12 @@ namespace TasksAPI.Repositories
 
         public async Task<List<TaskList>> GetAllAsync(int boardId)
         {
-           var list =  await _dbContext.TaskLists
-                .Where(x => x.BoardId == boardId)
-                .Include(y => y.MainTasks)
-                .ThenInclude(z => z.SubTasks)
-                .ToListAsync();
+            //for complete nested data 
+            var list = await _dbContext.TaskLists
+                 .Where(x => x.BoardId == boardId)
+                 .Include(y => y.MainTasks)
+                 .ThenInclude(z => z.SubTasks)
+                 .ToListAsync();
             return list;
         }
 
