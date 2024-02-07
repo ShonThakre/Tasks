@@ -20,7 +20,7 @@ namespace TasksAPI.Controllers
         private readonly IMapper _mapper;
 
 
-        public TaskLIstController(ITaskListRepository taskListRepository, IMapper mapper, UserManager<IdentityUser> userManager)
+        public TaskLIstController(ITaskListRepository taskListRepository, IMapper mapper)
         {
             _taskListRepository = taskListRepository;
             _mapper = mapper;
@@ -35,6 +35,11 @@ namespace TasksAPI.Controllers
         {
             var taskListDomainModel = await _taskListRepository.GetAllAsync(boardId);
 
+            if (taskListDomainModel == null)
+            {
+                return NotFound();
+            }
+
             var taskListDto = _mapper.Map<List<TaskListDTO>>(taskListDomainModel);
 
             return Ok(taskListDto); 
@@ -45,11 +50,11 @@ namespace TasksAPI.Controllers
         [ValidateModel]
         public async Task<IActionResult> Create([FromBody] TaskListRequestDTO taskListRequestDTO)
         {
-            var tasklistDomainModel = _mapper.Map<TaskList>(taskListRequestDTO);
+            var taskListDomainModel = _mapper.Map<TaskList>(taskListRequestDTO);
 
-            await _taskListRepository.CreateAsync(tasklistDomainModel);
+            await _taskListRepository.CreateAsync(taskListDomainModel);
 
-            return Ok(_mapper.Map<TaskListDTO>(tasklistDomainModel));
+            return Ok(_mapper.Map<TaskListDTO>(taskListRequestDTO));
        
         }
 
